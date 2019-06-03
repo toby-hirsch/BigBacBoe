@@ -57,6 +57,7 @@ Restructure socket.io on connection code
 */
 
 var express = require('express');
+var app = module.exports = express();
 
 var createError = require('http-errors');
 var path = require('path');
@@ -67,7 +68,8 @@ var dotenv = require('dotenv');
 var session = require("express-session")({
 	secret: 'liuwehmciauhpgawutyapwuiynhali47ybp9274tr8o73i4u5yar2937irby2973qp9t843pyna984tyl9wzi84styhg92I4UTYWGHPSV',
 	resave: true,
-	saveUninitialized: true
+	saveUninitialized: true,
+	secure: app.get('env') === 'production'
 });
 
 //var passport = require('passport');
@@ -116,23 +118,12 @@ passport.deserializeUser(function (user, done) {
 });*/
 
 
-var app = module.exports = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(cookieParser('liuwehmciauhpgawutyapwuiynhali47ybp9274tr8o73i4u5yar2937irby2973qp9t843pyna984tyl9wzi84styhg92I4UTYWGHPSV'));
-
-
-
-
-
-
-if (app.get('env') === 'production') {
-  sess.cookie.secure = true; // serve secure cookies, requires https
-}
-
 
 
 
