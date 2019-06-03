@@ -137,7 +137,7 @@ const oidc = new ExpressOIDC({
 	issuer: "https://dev-796524.okta.com/oauth2/default",
 	client_id: '0oaj0uejyD00a5BY7356',
 	client_secret: '_SBPKd5D_2gXN3YYQ1CwNdhqXCSpzHsn94TohDGf',
-	redirect_uri: 'https://serene-waters-51553.herokuapp.com/users/callback',
+	redirect_uri: 'https://bigbacboe.com/users/callback',
 	scope: "openid profile",
 	routes: {
 		login: {
@@ -188,9 +188,6 @@ server.listen(server_port, function(){
 });
 var io = require('socket.io')(server);
 
-/*var path = require('path');
-var cons = require('consolidate');
-app.engine('html', cons.swig);*/
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(express.json());
@@ -221,9 +218,6 @@ app.use('/', indexRouter);
 
 
 
-var db;
-const MongoClient = require('mongodb').MongoClient;
-var ObjectId = require('mongodb').ObjectID
 
 
 /*Database collections and structures:
@@ -237,10 +231,6 @@ var ObjectId = require('mongodb').ObjectID
 		playerblack
 */
 
-MongoClient.connect('mongodb://thirsch7:Toby0188@ds125469.mlab.com:25469/bigbacbase', (err, client) => {
-	if(err) return console.log(err);
-	db = client.db('bigbacbase');
-});
 
 /*app.post('/registrationForm', [
 	check('password').isLength({min: 8}).withMessage('password not long enough'),
@@ -491,7 +481,7 @@ io.on('connection', function(socket) {
 				console.log('Socket session');
 				console.log(game.players[p].socket.handshake.session);
 			}
-			io.to(game.id).emit('redirect', 'https://serene-waters-51553.herokuapp.com/game/' + game.id);
+			io.to(game.id).emit('redirect', 'https://bigbacboe.com/game/' + game.id);
 			
 		}
 		state = game.boardState.state;
@@ -539,11 +529,6 @@ io.on('connection', function(socket) {
 				}
 			}
 			
-			if (game.saving)
-				db.collection('games').findAndModify({
-					query: {'_id' : ObjectId(game.id)},
-					update: {$set: {'state' : game.boardState}}
-				});
 			
 			if (typeof state[b2] == 'number'){
 				if (checkAllFilled(b2, state))
