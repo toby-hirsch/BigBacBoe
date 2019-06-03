@@ -129,9 +129,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 
-/*if (app.get('env') === 'production') {
+if (app.get('env') === 'production') {
   sess.cookie.secure = true; // serve secure cookies, requires https
-}*/
+}
 
 
 
