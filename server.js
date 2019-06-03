@@ -137,7 +137,7 @@ const oidc = new ExpressOIDC({
 	issuer: "https://dev-796524.okta.com/oauth2/default",
 	client_id: '0oaj0uejyD00a5BY7356',
 	client_secret: '_SBPKd5D_2gXN3YYQ1CwNdhqXCSpzHsn94TohDGf',
-	redirect_uri: 'https://bigbacboe.com/users/callback',
+	redirect_uri: 'http://bigbacboe.com/users/callback',
 	scope: "openid profile",
 	routes: {
 		login: {
@@ -481,7 +481,7 @@ io.on('connection', function(socket) {
 				console.log('Socket session');
 				console.log(game.players[p].socket.handshake.session);
 			}
-			io.to(game.id).emit('redirect', 'https://bigbacboe.com/game/' + game.id);
+			io.to(game.id).emit('redirect', 'http://bigbacboe.com/game/' + game.id);
 			
 		}
 		state = game.boardState.state;
