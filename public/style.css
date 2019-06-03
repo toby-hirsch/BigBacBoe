@@ -1,0 +1,225 @@
+/************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************
+****************************************************************N  A  V  B  A  R**********************************************************************************************************
+*************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************/
+
+
+
+
+#navbar{
+	background-image: linear-gradient(rgba(50, 50, 50, 0.4), rgba(50, 50, 50, 0));
+	height: 80px;
+	border-bottom: 1px solid #c5c5c5;
+	line-height: 80px;
+	text-align: center;
+	color: hsl(0, 0%, 60%);
+	font-size: 1.1em;
+	margin-bottom: 10px;
+}
+body{
+	margin: 0px;
+	background-color: rgba(50, 50, 50, 0.2);
+}
+.navcont{
+	display: inline-block;
+	height: 80px;
+}
+.navlink{
+	color: white;
+	text-decoration: none;
+	padding-left: 1.5%;
+	padding-right: 1.5%;
+}
+.navlink:hover{
+	color: gainsboro;
+	text-decoration: none;
+}
+
+
+
+/************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************
+*****************************************************************************************F  O  R  M  S*******************************************************************************
+*************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************/
+
+
+
+
+
+.accountform{
+	width: 300px;
+	background-color: #e6e6e6;
+	margin: auto;
+	padding: 20px;
+	margin-top: 20px;
+	border: 1px solid #cccccc;
+	position: relative;
+}
+.error{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	right: 20px;
+	background-color: rgba(256, 256, 256, 0.9);
+	height: 100px;
+	display: none;
+	padding: 20px;
+	color: hsl(0, 50%, 50%);
+	font-size: 1.3em;
+}
+.formField{
+	width: 80%;
+	margin-bottom: 16px;
+	height: 30px;
+	font-size: 1em;
+}
+.formLabel{
+	margin-bottom: 4px;
+	margin-top: 0px;
+}
+#regHead{
+	margin-top: 0px;
+}
+.submitButton{
+	padding: 7px 10px 7px 10px;
+	background-color: rgba(50, 50, 50, 0.2);
+	font-size: 16px;
+	border-color: rgb(221, 221, 221);
+}
+.submitButton:focus{
+	outline: none;
+}
+
+
+/************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************
+*****************************************************************************************O  T  H  E  R*******************************************************************************
+*************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************
+*************************************************************************************************************************************************************************************/
+
+
+
+.bigheader{
+	color: black;
+	font-size: 4.5em;
+	text-align: center;
+}
+.buttoncont{
+	margin-bottom: 50px;
+}
+button:active{outline:none}
+.dashboardgame{
+	display: inline-block;
+	background-color: hsl(0, 0%, 80%);
+	width: 300px;
+	height: 100px;
+}
+.pagecont{
+	width: 90%;
+	margin: 50px auto;
+	background-color: hsl(0, 0%, 95%);
+	border-radius: 10px;
+	padding: 50px;
+}
+.removelinkstyle{
+	color: inherit;
+}
+.removelinkstyle:hover{
+	color: inherit;
+	text-decoration: inherit;
+}
+#status{
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	background-color: hsl(220, 50%, 30%);
+	color: white;
+	text-align: center;
+}
+#timerRed{
+	color: hsl(10, 100%, 35%);
+}
+div.timer{
+	width: 100px;
+	height: 100px;
+	border: 1px solid gray;
+	font-family: courier new, courier, monospaced;
+}
+.timeButtons{
+	display: inline-block;
+	background-color: rgb(221, 221, 221);
+	padding: 10px;
+	width: calc(100% - 2px);
+	margin: 0 1px;
+	border: 1px solid hsl(0, 0%, 95%);
+	border-radius: 10px;
+	font-size: 1.2em;
+	height: 100px;
+	transition: border-color 0.3s ease;
+}
+.timeButtons p{
+	margin-bottom: 0;
+}
+.timeButtons:hover{
+	border-color: hsl(0, 0%, 50%);
+	cursor: pointer;
+}
+.inactive{
+	display: none;
+}
+
+canvas#board{
+	position: absolute;
+	top: 0px;
+	left: 256px;
+	border: 1px solid #c5c5c5;
+	margin: 2px;
+	background-color: gainsboro;
+}
+div#boardContainer{
+	margin: auto;
+	position: relative;
+	width: 1088px;
+	height: 576px;
+}
+div#buttonContainer{
+	margin: auto;
+	position: relative;
+	width: 604px;
+}
+div.timer{
+	position: absolute;
+	top: 0px;
+	width: 250px;
+	border: 1px solid gray;
+	font-family: monospace;
+	font-size: 5em;
+	text-align: center;
+	margin: 2px;
+}
+div.leftTimer{
+	left: 0px;
+}
+div.rightTimer{
+	left: 832px;
+}
+
+.playerlabel{
+	position: absolute;
+	top: 120px;
+	text-align: center;
+	left: 0;
+	width: 254px;
+}
+.playerlabelright{
+	position: absolute;
+	top: 120px;
+	text-align: center;
+	left: 832px;
+	width: 254px;
+}

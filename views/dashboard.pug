@@ -1,0 +1,88 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+		title Big Bac Boe
+		link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css', integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS', crossorigin='anonymous')
+		link(rel='stylesheet', type='text/css', href='/style.css')
+	body
+		#navbar.text-center
+			a.navlink(href='/') Home
+			|	|
+			a.navlink(href='/about') About
+			|	|
+			a.navlink(href='/instructions') How to Play
+			|	|
+			a.navlink(href='/users/login') #{user.profile.login}
+		.pagecont.active
+			if gamelist.length > 0
+				- var len = gamelist.length
+				- var i = 0
+				- function doubleChunkArray(myArray, chunkOne, chunkTwo){
+				- 	var index;
+				- 	var len = myArray.length;
+				- 	var tempArray = [];
+				-	for (index = 0; index < len; index += chunkOne) {
+				-		myChunk = myArray.slice(index, index+chunkOne);
+				-		// Do something if you want with the group
+				-		var tempchunk = chunkArray(myChunk, chunkTwo);
+				-		console.log('Printing chunk');
+				-		console.log(tempchunk);
+				-		tempArray.push(tempchunk);
+				-	}
+				-	return tempArray;
+				-}
+				- function chunkArray(myArray, chunk_size){
+				-	var index = 0;
+				-	var arrayLength = myArray.length;
+				-	var tempArray = [];
+				-	
+				-	for (index = 0; index < arrayLength; index += chunk_size) {
+				-		myChunk = myArray.slice(index, index+chunk_size);
+				-		// Do something if you want with the group
+				-		tempArray.push(myChunk);
+				-	}
+				-	return tempArray;
+				-}
+				- var gameChunks = doubleChunkArray(gamelist, 4, 2);
+				- console.log('Game List');
+				- console.log(gamelist);
+				- console.log(gameChunks);
+				h1.bigheader Resume a Game
+				each chunks in gameChunks
+					.row.no-gutters
+					- console.log('Displaying chunk');
+					- console.log(chunks);
+						each pair in chunks
+							.col-xl-6
+								.row.no-gutters
+									each game in pair
+										.col-md-6
+											a.timeButtons.removelinkstyle(href='../game/' + game.id)
+												p='Game ' + game.id
+												p='vs. ' + (game.opponent ? game.opponent : 'guest')
+			h1.bigheader Join a New Game
+			hr
+			.row.no-gutters
+				.col-md-6
+					.row.no-gutters
+						.col-sm-6
+							button#10.timeButtons.joingame(style='left: 0px; top: 0px;') 10 Minutes
+						.col-sm-6
+							button#20.timeButtons.joingame(style='left: 202px; top: 0px;') 20 Minutes
+				.col-md-6
+					.row.no-gutters
+						.col-sm-6
+							button#30.timeButtons.joingame(style='left: 404px; top: 0px;') 30 Minutes
+						.col-sm-6
+							button#40.timeButtons.joingame(style='left: 404px; top: 0px;') 40 Minutes
+		
+		#waitingDiv.text-center.inactive Finding an opponent
+		
+		script(src='http://code.jquery.com/jquery-3.3.1.min.js', integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', crossorigin='anonymous')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js', integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut', crossorigin='anonymous')
+		script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js', integrity='sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k', crossorigin='anonymous')
+		script(src='/socket.io/socket.io.js')
+		script(src='https://cdn.socket.io/socket.io-1.4.5.js')
+		script(src='/client.js')

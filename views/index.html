@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+		<title>Big Bac Boe</title>
+		<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
+		<link rel="stylesheet" type="text/css" href="/style.css"/>
+	</head>
+	<body>
+		<div class='text-center' id='navbar'>
+			<a href='/' class='navlink'>Home</a> |
+			<a href='/about' class='navlink'>About</a> |
+			<a href='/instructions' class='navlink'>How to Play</a> |
+			<a href='/users/login' class='navlink'>Sign in</a>
+		</div>
+		<div class='pagecont active'>
+			<h1 class='bigheader'>Join a Game</h1><hr>
+			<div class='row no-gutters'>
+				<div class='col-md-6'>
+					<div class='row no-gutters'>
+						<div class='col-sm-6'>
+							<button id="10" class='timeButtons' style="left: 0px; top: 0px;">10 Minutes</button>
+						</div>
+						<div class='col-sm-6'>
+							<button id="20" class='timeButtons' style="left: 202px; top: 0px;">20 Minutes</button>
+						</div>
+					</div>
+				</div>
+				<div class='col-md-6'>
+					<div class='row no-gutters'>
+						<div class='col-sm-6'>
+							<button id="30" class='timeButtons' style="left: 404px; top: 0px;">30 Minutes</button>
+						</div>
+						<div class='col-sm-6'>
+							<button id="40" class='timeButtons' style="left: 404px; top: 0px;">40 Minutes</button>
+						</div>
+					</div>
+				</div>
+			</div>			
+		</div>
+		<div id="boardContainer" class='inactive'>
+			<div id='timerRed' class='timer' color="red"></div>
+			<canvas id='board' width='570px' height='570px'></canvas>
+			<div id='timerBlack' class='timer'></div>
+		</div>
+		<div id='waitingDiv' class='text-center inactive'>Finding an opponent</div>
+		
+		<script src='http://code.jquery.com/jquery-3.3.1.min.js' integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=' crossorigin='anonymous'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js' integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut' crossorigin='anonymous'></script>
+		<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js' integrity='sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k' crossorigin='anonymous'></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+		<script src='/client.js'></script>
+	</body>
+</html>

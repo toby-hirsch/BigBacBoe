@@ -1,0 +1,46 @@
+- const BLACK = 1;
+- const RED = -1;
+- const EMPTY = 0;a
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+		title Big Bac Boe
+		link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css', integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS', crossorigin='anonymous')
+		link(rel='stylesheet', type='text/css', href='/style.css')
+	body
+		#navbar.text-center
+			a.navlink(href='/') Home
+			|	|
+			a.navlink(href='/about') About
+			|	|
+			a.navlink(href='/instructions') How to Play
+			|	|
+			if user
+				a.navlink(href='/users/login') #{user.profile.login}
+			else
+				a.navlink(href='/users/login') Sign In
+		#boardContainer
+			if color == RED
+				#timerBlack.timer.leftTimer
+				- console.log('Opponent (black): ' + blackPlayer);
+				p.playerlabel #{blackPlayer}
+				canvas#board(width='570px', height='570px')
+				#timerRed.timer.rightTimer
+			else
+				#timerRed.timer.leftTimer
+				- console.log('Opponent (red): ' + redPlayer);
+				p.playerlabel(style='color: red') #{redPlayer}
+				canvas#board(width='570px', height='570px')
+				#timerBlack.timer.rightTimer
+				if color == EMPTY
+					p.playerlabelright #{blackPlayer}
+		p#status
+	script(src='http://code.jquery.com/jquery-3.3.1.min.js', integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', crossorigin='anonymous')
+	script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js', integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut', crossorigin='anonymous')
+	script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js', integrity='sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k', crossorigin='anonymous')
+	script(src='/socket.io/socket.io.js')
+	script(src='https://cdn.socket.io/socket.io-1.4.5.js')
+	script(src='/client.js')
+	

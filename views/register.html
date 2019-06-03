@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+		<title>Big Bac Boe</title>
+		<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css' integrity='sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS' crossorigin='anonymous'>
+		<link rel="stylesheet" type="text/css" href="/style.css"/>
+	</head>
+	<body>
+		<div id='navbar'>
+			<div id='navcont'>
+				<div class='navelem'>
+					<a href='/' class='navlink'>Home</a>
+				</div>
+				<div class='navelem' id='reglink'>
+					<a href='register' class='navlink'>Register</a>
+				</div>
+			</div>
+		</div>
+		<div class='container-fluid'>
+			<div class='row'>
+				<div class='col-sm-6 col-md-5 offset-md-1 col-lg-4 offset-lg-2 col-xl-3 offset-xl-3'>
+					<div id="regForm" class='accountform'>
+						<div class='error' id='regerror'></div>
+						<h1 id="regHead">Register</h1>
+						<form method="POST">
+							<p class="formLabel">Email</p>
+							<input type="text" name="email" class="formField">
+							<p class="formLabel">Username</p>
+							<input type="text" name="username" class="formField">
+							<p class="formLabel">Password</p>
+							<input type="password" name="password" class="formField">
+							<p class="formLabel">Confirm Password</p>
+							<input type="password" name="passwordConfirm" class="formField">
+							<input type="submit" class="submitButton" value="Create Account">
+						</form>
+					</div>
+				</div>
+				<div class='col-sm-6 col-md-5 col-lg-4 col-xl-3'>
+					<div id="loginForm" class='accountform'>
+						<div class='error'></div>
+						<h1 id="loginHead">Log In</h1>
+						<form method="POST">
+							<p class="formLabel">Username</p>
+							<input type="text" name="username" class="formField">
+							<p class="formLabel">Password</p>
+							<input type="password" name="password" class="formField">
+							<input type="submit" class="submitButton" value="Log In">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src='http://code.jquery.com/jquery-3.3.1.min.js' integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=' crossorigin='anonymous'></script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js' integrity='sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut' crossorigin='anonymous'></script>
+		<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js' integrity='sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k' crossorigin='anonymous'></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+		<script src='/register.js'></script>
+	</body>
+</html>
