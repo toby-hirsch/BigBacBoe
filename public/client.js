@@ -1,4 +1,4 @@
-var socket = io(window.location.hostname);
+var socket = io();
 var id;
 
 const BOARD_LENGTH = 570;
