@@ -14,6 +14,6 @@ router.get("/", (req, res) => {
 
 router.get('*', (req, res) => {
 	res.status(404);
-	res.render(error);
+	res.render('error');
 });
 module.exports = router;

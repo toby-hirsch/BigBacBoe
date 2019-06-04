@@ -165,9 +165,20 @@ div.timer{
 .timeButtons p{
 	margin-bottom: 0;
 }
-.timeButtons:hover{
+.timeButtons:hover, .navbuttonbig:hover{
 	border-color: hsl(0, 0%, 50%);
 	cursor: pointer;
+}
+.navbuttonbig{
+	display: inline-block;
+	background-color: rgb(221, 221, 221);
+	width: calc(100% - 2px);
+	border: 1px solid hsl(0, 0%, 95%);
+	border-radius: 10px;
+	font-size: 1.2em;
+	height: 100px;
+	line-height: 100px;
+	transition: border-color 0.3s ease;
 }
 .inactive{
 	display: none;
