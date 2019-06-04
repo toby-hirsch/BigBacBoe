@@ -19,7 +19,8 @@ Token Value: 00-deE4vkSIclxHR22fkgLekWEm2Qv2S4dAYR8J2k4
 
 */
 
-
+//const baseurl = 'http://localhost:5000';
+const baseurl = 'http://www.bigbacboe.com';
 var server_port = process.env.PORT || 8080;
 /*var server = require('http').createServer(handler)
 var io = require('socket.io')(server);
@@ -69,8 +70,10 @@ var session = require("express-session")({
 	secret: 'liuwehmciauhpgawutyapwuiynhali47ybp9274tr8o73i4u5yar2937irby2973qp9t843pyna984tyl9wzi84styhg92I4UTYWGHPSV',
 	resave: true,
 	saveUninitialized: true,
-	secure: app.get('env') === 'production'
+	//secure: app.get('env') === 'production'
 });
+
+var url = require('url');
 
 //var passport = require('passport');
 //var cookieParser = require('cookie-parser');
@@ -137,7 +140,7 @@ const oidc = new ExpressOIDC({
 	issuer: "https://dev-796524.okta.com/oauth2/default",
 	client_id: '0oaj0uejyD00a5BY7356',
 	client_secret: '_SBPKd5D_2gXN3YYQ1CwNdhqXCSpzHsn94TohDGf',
-	redirect_uri: 'http://bigbacboe.com/users/callback',
+	redirect_uri: baseurl + '/users/callback',
 	scope: "openid profile",
 	routes: {
 		login: {
@@ -463,6 +466,8 @@ io.on('connection', function(socket) {
 			socket.emit('initialize', EMPTY);
 			socket.emit('drawState', game.boardState);
 		}
+		if (game.time == '0')
+			socket.emit('timeunlim');
 		socket.join(gameID);
 	}
 	
@@ -481,7 +486,7 @@ io.on('connection', function(socket) {
 				console.log('Socket session');
 				console.log(game.players[p].socket.handshake.session);
 			}
-			io.to(game.id).emit('redirect', 'http://bigbacboe.com/game/' + game.id);
+			io.to(game.id).emit('redirect', baseurl + '/game/' + game.id);
 			
 		}
 		state = game.boardState.state;
@@ -714,6 +719,13 @@ function randomKey(len){
 }
 
 function startTimer(game){
+	console.log('printing game time');
+	console.log(game.time);
+	if (game.time == '0'){
+		game.times = undefined;
+		return;
+	}
+	
 	var time = game.times.black = game.times.red = game.time * 60;
 	var turn;
 	
