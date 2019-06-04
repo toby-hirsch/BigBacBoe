@@ -5,7 +5,6 @@ const router = express.Router();
 
 // Home page
 router.get("/", (req, res) => {
-	console.log('get request to homepage');
 	if (req.user)
 		res.redirect('dashboard');
 	else
@@ -13,5 +12,8 @@ router.get("/", (req, res) => {
 });
 
 
-
+router.get('*', (req, res) => {
+	res.status(404);
+	res.render(error);
+});
 module.exports = router;
