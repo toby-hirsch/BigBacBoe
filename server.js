@@ -19,8 +19,8 @@ Token Value: 00-deE4vkSIclxHR22fkgLekWEm2Qv2S4dAYR8J2k4
 
 */
 
-const baseurl = 'http://localhost:5000';
-//const baseurl = 'http://www.bigbacboe.com';
+//const baseurl = 'http://localhost:5000';
+const baseurl = 'http://www.bigbacboe.com';
 var server_port = process.env.PORT || 8080;
 /*var server = require('http').createServer(handler)
 var io = require('socket.io')(server);
@@ -59,7 +59,7 @@ Restructure socket.io on connection code
 
 var express = require('express');
 var app = module.exports = express();
-app.locals.baseurl = 'http://localhost:5000';
+app.locals.baseurl = baseurl;
 var createError = require('http-errors');
 var path = require('path');
 var logger = require('morgan');
