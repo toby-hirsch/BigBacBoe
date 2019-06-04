@@ -202,6 +202,13 @@ socket.on('timer', function(times){
 });
 
 
+socket.on('timeunlim', function(){
+	console.log('setting timers to unlimited');
+	$('#timerRed').html('--:--');
+	$('#timerBlack').html('--:--');
+});
+
+
 $('.navlink').click(function(){
 	redirect($(this).attr('data-to'));
 });
