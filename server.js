@@ -195,7 +195,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(express.json());
 
-const gameRouter = require('./routes/game');        
 
 var gamestore = require('./gamestore.js');
 
@@ -203,20 +202,13 @@ app.use(express.urlencoded({ extended: false }));
 
 
 
-/*var userInViews = require('./node_modules/userInViews');
-var authRouter = require('./routes/auth');*/
 var indexRouter = require('./routes/public');
-//var usersRouter = require('./routes/users');
 var dashboardRouter = require('./routes/dashboard');
+var gameRouter = require('./routes/game');        
 
-
-
-//app.use(userInViews());
 app.use('/dashboard', loginRequired, dashboardRouter);
 app.use('/game', gameRouter);
-//app.use('/', authRouter);
 app.use('/', indexRouter);
-//app.use('/', usersRouter);
 
 
 
@@ -461,6 +453,8 @@ io.on('connection', function(socket) {
 		else{
 			console.log('Adding observer priveliges');
 			game = gamestore.games[gameID];
+			if (!game)
+				return;
 			state = game.boardState.state;
 			player = -1;
 			socket.emit('initialize', EMPTY);
