@@ -12,6 +12,16 @@
 */
 
 /*
+Idea for neural net structure:
+	*Input layer: 729 nodes, each representing one square.
+		*Each square is 0 for empty, 0.5 for black, 1 for red (maybe rethink this)
+		*All squares in a filled bac or big bac have its value
+	*Output layer: 729 nodes, each representing one square. Software plays in whichever legal square has the highest value.
+	*Pit neural nets against each other, adapt winners.
+
+*/
+
+/*
 Authorization info:
 Client ID: 0oaj0uejyD00a5BY7356
 Client Password: yWb5NZ0KS8svF48cCjUzbwf4wtuCD8LrXjsoToKe
