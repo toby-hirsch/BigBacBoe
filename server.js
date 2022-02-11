@@ -1,17 +1,3 @@
-/**
-* TODO
-* *accounts
-* * *saving games
-* * *customizable boards
-* * *invite user
-* * *ratings
-* *send user to unique URL for each game, allowing spectators or inviting by link
-* *puzzles and mini games
-* *tournaments
-* *AI to play against
-*/
-
-
 const env = 'production';
 
 //Libraries
@@ -256,25 +242,11 @@ io.on('connection', function(socket) {
 	if (socket.handshake.session.passport)
 		user = socket.handshake.session.passport.user.preferred_username;
 	socket.emit('setid', socket.id);
-	console.log('**************************NEW CONNECTION.****************************************');
-	console.log('Session object: ');
-	console.log(socket.handshake.session); //The session.game object does not exist here
 	var socketloc = socket.handshake.headers.referer;
-	console.log(socketloc);
-	
-	/*
-	  All of this section is redundant and should be removed
-	  This is calculated in the game.js routes
-	  Find a way to transmit the information in the session instead of recalculating is
-	*/
 	
 	if (socketloc.includes('/game/')){
-		console.log('Socket joining a game');
-		console.log(socket.handshake.session.game);
-		console.log(user);
 		var gameID = socketloc.split('/game/')[1];
 		if (socket.handshake.session.game && socket.handshake.session.game.id == gameID){
-			console.log('Adding playing priveliges from socket session');
 			game = gamestore.games[gameID];
 			state = game.boardState.state;
 			player = game.players[COLORS[socket.handshake.session.game.color]];
@@ -283,7 +255,6 @@ io.on('connection', function(socket) {
 			socket.emit('drawState', game.boardState);
 		}
 		else if (user && user == gamestore.games[gameID].players.black.user){
-			console.log('Adding playing priveliges for black user');
 			game = gamestore.games[gameID];
 			state = game.boardState.state;
 			player = game.players.black;
@@ -292,7 +263,6 @@ io.on('connection', function(socket) {
 			socket.emit('drawState', game.boardState);
 		}
 		else if (user && user == gamestore.games[gameID].players.red.user){
-			console.log('Adding playing priveliges for red user');
 			game = gamestore.games[gameID];
 			state = game.boardState.state;
 			player = game.players.red;
@@ -301,7 +271,6 @@ io.on('connection', function(socket) {
 			socket.emit('drawState', game.boardState);
 		}
 		else{
-			console.log('Adding observer priveliges');
 			game = gamestore.games[gameID];
 			if (!game)
 				return;
@@ -319,16 +288,12 @@ io.on('connection', function(socket) {
 	socket.on('timeClicked', function(gameTime){
 		player = addPlayer(socket, gameTime, user); //maybe change this to store the ID instead of the entire socket
 		game = gamestore.games[player.gameID];
-		console.log('Printing game');
-		console.log(game);
 		if (game.players.black && game.players.red){
 			console.log('STARTING GAME');
 			time = startTimer(game);
 			for (var p in game.players){
 				game.players[p].socket.handshake.session.game = {id: game.id, color: game.players[p].color};
 				game.players[p].socket.handshake.session.save();
-				console.log('Socket session');
-				console.log(game.players[p].socket.handshake.session);
 			}
 			io.to(game.id).emit('redirect', baseurl + '/game/' + game.id);
 			
@@ -341,40 +306,25 @@ io.on('connection', function(socket) {
 	socket.on('processClick', function(clickCoord){
 		if (player == -1)
 			return;
-		console.log('******************************************CLICK******************************************');
-		console.log(clickCoord);
 		var spot = clickCoord[2];
 		var b2 = clickCoord[1];
 		var b1 = clickCoord[0];
-		console.log('Turn: ' + game.boardState.turn);
-		console.log('Player color: ' + player.color);
 		if (game.boardState.turn == player.color && typeof state[b1][b2] == 'object' && state[b1][b2][spot] == EMPTY && checkMove(clickCoord, game.boardState.nextMove) && !game.boardState.winner){
-			console.log('EXECUTING MOVE FOR ' + player.color);
 			game.boardState.turn *= -1;
 			state[b1][b2][spot] = player.color;
-			console.log('LOGGING STATE OF BIG BAC FROM PROCESSCLICK');
-			console.log(state[b1]);
-			//console.log(state);
 			if (checkWin(state[b1][b2], player.color)){
-				console.log('bac won');
 				state[b1][b2] = player.color;
 				if (checkWin(state[b1], player.color)){
-					console.log('big bac won');
 					state[b1] = player.color;
 					if (checkWin(state, player.color)){
-						console.log('big bac bate');
 						game.boardState.winner = player.color;
 					}
 				}
 			}
-			console.log('LOGGING STATE OF BAC FROM PROCESSCLICK');
-			console.log(state[b1][b2]);
-			if (isFilled(state[b1][b2], true)){ //throws an error because state[b1][b2] does not exist after a big bac is won
+			if (isFilled(state[b1][b2], true)){
 				state[b1][b2] = EMPTY;
 				if (isFilled(state[b1], false)){
 					state[b1] = EMPTY;
-					if (isFilled(state, false))
-						console.log('The game is tied');
 				}
 			}
 			
@@ -389,26 +339,19 @@ io.on('connection', function(socket) {
 				game.boardState.nextMove = [b2, 9];
 			else
 				game.boardState.nextMove = [b2, spot];
-			console.log('updating next move to ' + game.boardState.nextMove);
 			
 			players = game.players;
 			var len = players.length;
 			var emission = game.boardState;
 			io.to(game.id).emit('drawState', emission);
-			//if (checkWin(state, player.color)) {
-				//console.log(player.color + ' wins');
-				//for (var i = 0; i < 2; i++)
-					//players[i].socket.emit('endGame', player.color);
-			//}
 		}
 	});	
 });
 
-/* addPlayer documentation
-	Parameters:
-		* socket: Socket of the current user
-		* gameTime: Desired game length
-		* user: the username of the current user
+/* 
+	* socket: Socket of the current user
+	* gameTime: Desired game length
+	* user: the username of the current user
 		
 	Tries to find a game with one player of the approporiate length
 	  If successful, it calls newPlayer with red and adds the player to that game
@@ -452,7 +395,6 @@ function checkLine(boardState, color, line){
 	for (var i = 0; i < 3; i++)
 		if (boardState[line[i]] != color)
 			return false;
-	console.log('WINNING LINE: ' + line);
 	return true;
 }
 
@@ -462,13 +404,9 @@ function checkMove(coords, nextMove){
 }
 
 function checkWin(boardState, color){
-	console.log('CHECKING WIN');
-	console.log(boardState);
 	var len = winPossibilities.length;
 	for (var i = 0; i < len; i++)
 		if (checkLine(boardState, color, winPossibilities[i])){
-			console.log('WINNING CALL');
-			console.log(winPossibilities[i]);
 			return true;
 		}
 	return false;
@@ -486,15 +424,12 @@ function clone2d(array){
 function isFilled(board, b2){
 	if (!board)
 		return false;
-	console.log('LOGGING BOARD FROM ISFILLED');
-	console.log(board);
 	if (typeof board == 'number')
 		return false;
 	var len = board.length;
 	for (var i = 0; i < len; i++)
 		if (b2 && board[i] == EMPTY || typeof board[i] != 'number')
 			return false;
-	console.log('board is filled');
 	return true;
 }
 
@@ -562,8 +497,6 @@ function randomKey(len){
 }
 
 function startTimer(game){
-	console.log('printing game time');
-	console.log(game.time);
 	if (game.time == '0'){
 		game.times = undefined;
 		return;
