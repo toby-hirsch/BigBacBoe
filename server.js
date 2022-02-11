@@ -1,5 +1,5 @@
 /**
-* LIST OF FEATURES TO ADD
+* TODO
 * *accounts
 * * *saving games
 * * *customizable boards
@@ -11,145 +11,52 @@
 * *AI to play against
 */
 
-/*
-Idea for neural net structure:
-	*Input layer: 729 nodes, each representing one square.
-		*Each square is 0 for empty, 0.5 for black, 1 for red (maybe rethink this)
-		*All squares in a filled bac or big bac have its value
-	*Output layer: 729 nodes, each representing one square. Software plays in whichever legal square has the highest value.
-	*Pit neural nets against each other, adapt winners.
 
-*/
+const env = 'production';
 
-/*
-Authorization info:
-Client ID: 0oaj0uejyD00a5BY7356
-Client Password: yWb5NZ0KS8svF48cCjUzbwf4wtuCD8LrXjsoToKe
-Token Value: 00-deE4vkSIclxHR22fkgLekWEm2Qv2S4dAYR8J2k4
-
-*/
-
-//const baseurl = 'http://localhost:5000';
-const baseurl = 'http://www.bigbacboe.com';
-var server_port = process.env.PORT || 8080;
-/*var server = require('http').createServer(handler)
-var io = require('socket.io')(server);
-var fs = require('fs');
-
-var express = require('express');
-var app = express();
-app.set('view engine', 'ejs');*/
-
-
-/*
-Store games in database with BOTH a socket and a user
-	*Game object, emailOne and emailTwo
-		*Game object stores all usual information, but instead of storing game times, it stores a time object for each player
-			*last: time remaining as of last move
-			*lastMove: undefined if it is not their turn, otherwise the time at which the last move was played
-		*Time is calculated by doing last - (currTime - lastMove)
-	*Game object is only updated when a move is played
-		*When game object is updated, it is sent back to client to display timer, which is calculated client sidebar
-		*Server checks all games in database on certain interval for time expiring
-	*Each game is a room with all the sockets connected to that URL
-	*Anyone can connect to the URL to watch the game
-	*Block clicking for anyone who is not part of the game on client side; also check on server side that any clicks submitted come from either the appropriate socket or user.
-
-Restructure socket.io on connection code
-	*When user hits new game button, that triggers socket event that sets the game, player, etc. for that socket
-	*When user hits join existing game, the player is redirected to that game's url and a different socket event is triggered
-		*sets the game, player, etc. for that socket
-		*changes the player object in the game to have the new socket
-		*adds the new socket to the game's namespace
-	*on disconnect, clear the game object of the socket (maybe unnecessary)
-	*parse URL to see if someone is connecting directly to a game URL. If so:
-		*add them to the game namespace
-		*see if they are logged in with the account of one of the users; if so, emit telling them which color they are (add this emission to normal games too)
-*/
+//Libraries
 
 var express = require('express');
 var app = module.exports = express();
-app.locals.baseurl = baseurl;
-var createError = require('http-errors');
 var path = require('path');
 var logger = require('morgan');
-
+var secret = require('./secret.js')
 var dotenv = require('dotenv');
+const baseurl = env == 'development' ? 'http://localhost:8080' : 'http://www.bigbacboe.com';
+var server_port = process.env.PORT || 8080;
 
+var createError = require('http-errors');
 var session = require("express-session")({
-	secret: 'liuwehmciauhpgawutyapwuiynhali47ybp9274tr8o73i4u5yar2937irby2973qp9t843pyna984tyl9wzi84styhg92I4UTYWGHPSV',
+	secret: secret.express,
 	resave: true,
 	saveUninitialized: true,
-	//secure: app.get('env') === 'production'
+	secure: env === 'production'
 });
-
 var url = require('url');
-
-//var passport = require('passport');
-//var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-//var Auth0Strategy = require('passport-auth0');
-
 var okta = require("@okta/okta-sdk-nodejs");
 var ExpressOIDC = require("@okta/oidc-middleware").ExpressOIDC;
-
 var sharedsession = require("express-socket.io-session");
-
-
-//dotenv.config();
-
-/*var strategy = new Auth0Strategy(
-  {
-    domain: process.env.AUTH0_DOMAIN,
-    clientID: process.env.AUTH0_CLIENT_ID,
-    clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    callbackURL:
-      process.env.AUTH0_CALLBACK_URL || 'http://localhost:8080/dashboard'
-  },
-  function (accessToken, refreshToken, extraParams, profile, done) {
-    // accessToken is the token to call Auth0 API (not needed in the most cases)
-    // extraParams.id_token has the JSON Web Token
-    // profile has all the information from the user
-    return done(null, profile);
-  }
-);*/
-
-
-
-/*passport.use(strategy);
-
-passport.serializeUser(function (user, done) {
-  console.log('serializing user');
-  console.log(user);
-  done(null, user);
+var server = require('http').Server(app);
+server.listen(server_port, function(){
+	console.log( "Listening on port " + server_port );
+});
+var io = require('socket.io')(server, {
+	allowEIO3: true
 });
 
-passport.deserializeUser(function (user, done) {
-  console.log('deserializing user');
-  console.log(user);
-  done(null, user);
-});*/
+app.locals.baseurl = baseurl;
 
-
-
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-//app.use(cookieParser('liuwehmciauhpgawutyapwuiynhali47ybp9274tr8o73i4u5yar2937irby2973qp9t843pyna984tyl9wzi84styhg92I4UTYWGHPSV'));
-
-
-
-
+//Auth config
 
 var oktaClient = new okta.Client({
 	orgUrl: 'https://dev-796524.okta.com',
-	token: '00-deE4vkSIclxHR22fkgLekWEm2Qv2S4dAYR8J2k4'
+	token: secret.oktaToken
 });
 const oidc = new ExpressOIDC({
 	issuer: "https://dev-796524.okta.com/oauth2/default",
 	client_id: '0oaj0uejyD00a5BY7356',
-	client_secret: '_SBPKd5D_2gXN3YYQ1CwNdhqXCSpzHsn94TohDGf',
+	client_secret: secret.okta,
 	redirect_uri: baseurl + '/users/callback',
 	scope: "openid profile",
 	routes: {
@@ -160,13 +67,27 @@ const oidc = new ExpressOIDC({
 			path: "/users/callback",
 			defaultRedirect: "/dashboard"
 		}
-	}
+	},
+	appBaseUrl: baseurl
 });
 
+function loginRequired(req, res, next) {
+  if (!req.user) {
+    return res.status(401).render("unauthenticated");
+  }
+  next();
+}
+
+//Routing
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session);
 app.use(oidc.router);
 
-app.use((req, res, next) => { //more Okta
+app.use((req, res, next) => {
   if (!req.userinfo) {
     return next();
   }
@@ -181,36 +102,12 @@ app.use((req, res, next) => { //more Okta
     });
 });
 
-function loginRequired(req, res, next) {
-  if (!req.user) {
-    return res.status(401).render("unauthenticated");
-  }
-
-  next();
-}
-
-//app.use(passport.initialize());
-//app.use(passport.session());
-
-
-
-
-var server = require('http').Server(app);
-server.listen(server_port, function(){
-	console.log( "Listening on port " + server_port );
-});
-var io = require('socket.io')(server);
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(express.json());
-
-
-var gamestore = require('./gamestore.js');
-
 app.use(express.urlencoded({ extended: false }));
 
-
+var gamestore = require('./gamestore.js');
 
 var indexRouter = require('./routes/public');
 var dashboardRouter = require('./routes/dashboard');
@@ -219,11 +116,6 @@ var gameRouter = require('./routes/game');
 app.use('/dashboard', loginRequired, dashboardRouter);
 app.use('/game', gameRouter);
 app.use('/', indexRouter);
-
-
-
-
-
 
 /*Database collections and structures:
 	accounts
@@ -236,57 +128,7 @@ app.use('/', indexRouter);
 		playerblack
 */
 
-
-/*app.post('/registrationForm', [
-	check('password').isLength({min: 8}).withMessage('password not long enough'),
-	check('email').isEmail().withMessage(INVALID_EMAIL_ERROR)
-	], (req, res) => {
-	const errors = validationResult(req);
-	console.log(errors.array());
-	const content = req.body;
-	const id = content.socketid;
-	console.log(id);
-	var query;
-	if (db.collection('accounts').count({username: content.username}) != 0){
-		io.to('${' + id + '}').emit('registrationerror', USER_TAKEN_ERROR);
-		res.end();
-		return;
-	}
-	if (!errors.isEmpty()){
-		io.to('${' + id + '}').emit('registrationerror', parseInt(errors.array()[0].msg));
-		res.end();
-		return;
-	}
-	if (content.password != content.passwordConfirm){
-		io.to('${' + id + '}').emit('registrationerror', PASSWORD_MATCH_ERROR);
-		res.end();
-		return;
-	}
-	
-	res.redirect('/');
-	db.collection('accounts').insert({
-		username: content.username, email: content.email, password: content.password
-	});
-	
-	res.end();
-});*/
-
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-
-    res.writeHead(200);
-    res.end(data);
-  });
-}
-
-
-var playerMap = {};
-
+//Board config
 
 const EMPTY = 0;
 const RED = -1;
@@ -399,13 +241,11 @@ const EMPTY_BOARD =
 	]
 ];
 
-//{	Error Constants 
+//Error Constants 
 const PASSWORD_LENGTH_ERROR = 0;
 const USER_TAKEN_ERROR = 1;
 const INVALID_EMAIL_ERROR = 2;
 const PASSWORD_MATCH_ERROR = 3;
-//}
-
 
 io.use(sharedsession(session, {
     autoSave:true
@@ -594,7 +434,6 @@ function addPlayer(socket, gameTime, user){
 		gamestore.games[gameKey] = game;
 	}
 	player.gameID = gameKey;
-	playerMap[player.id] = gameKey;
 	socket.join(gameKey);
 	
 	return player;
