@@ -103,17 +103,6 @@ app.use('/dashboard', loginRequired, dashboardRouter);
 app.use('/game', gameRouter);
 app.use('/', indexRouter);
 
-/*Database collections and structures:
-	accounts
-		username
-		email
-		password
-	games
-		state
-		playerred
-		playerblack
-*/
-
 //Board config
 
 const EMPTY = 0;
@@ -505,7 +494,7 @@ function startTimer(game){
 	var time = game.times.black = game.times.red = game.time * 60;
 	var turn;
 	
-	var gameTimer = setInterval(function(){ //Increase the interval on this and only check if the time should be zero after restructuring to store time in database
+	var gameTimer = setInterval(function(){ 
 		turn = game.boardState.turn;
 		if (turn == BLACK){
 			game.times.black = game.times.black - 1;
